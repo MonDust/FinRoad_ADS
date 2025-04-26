@@ -1,6 +1,9 @@
-ak Dojade?
-autor:/author:
+# Instructions
+
+## Jak Dojade?
+### autor:/author:
 Krzysztof Ocetkiewicz
+### Description:
 Dana jest prostokątna mapa podzielona na kwadraty. Każde pole mapy może być puste (nieprzejezdne), być fragmentem drogi (przejezdnej w każdą stronę) lub miastem (przejezdnym tak jak droga). Nazwa każdego z miast jest podana na mapie i każda litera zajmuje jedno pole (pole z literą jest nieprzejezdne). Przebycie jednego pola zajmuje minutę. Poruszać się możemy tylko pomiędzy polami sąsiadującymi bokami. Dodatkowo wybrane miasta połączone są jednokierunkowymi połączeniami lotniczymi.
 Nazwa miasta będzie sąsiadowała (bokiem lub rogiem) z miastem pierwszą lub ostatnią literą. Nazwa będzie jednoznacznie przypisana do miasta. Pole przed i za nazwą miasta (o ile będzie takie pole) nie pojawi się cyfra lub litera.
 Uwagi implementacyjne:
@@ -24,7 +27,7 @@ Implementation notes:
     Smartpointers from standard library are forbidden, but you can still implement your own smartpointer class.
     Please remember to free memory when deleting elements of the implemented data structures.
 
-Przykłady:/Examples:
+### Przykłady:/Examples:
 
 Tak może być:/This can be:
 
@@ -64,7 +67,7 @@ A*#*C...
 ....*....
 A*##C##*B
 
-Wejście:/Input:
+### Wejście:/Input:
 W pierwszej linii wejścia pojawią się wymiary mapy: szerokość w i wysokość h. W następnych h liniach (każda po w znaków) podany będzie opis mapy. Każdy znak opisu to kropka (.) oznaczająca puste pole, krzyżyk (#) reprezentujący drogę, gwiazdka (*) symbolizujący miasto lub litera bądź cyfra, będąca częścią nazwy miasta.
 W kolejnej linii pojawi się jedna liczba k – liczba połączeń lotniczych. Następne k linii to opis połączeń w postaci źródło cel czas, gdzie źródło to nazwa miasta startowego, cel to nazwa miasta docelowego a czas jest czasem przelotu w minutach. W kolejnej linii pojawi się jedna liczba q będąca liczbą zapytań. Każde zapytanie pojawi się w osobnej linii i będzie miało format: źródło cel typ. Jest to zapytanie o najkrótszy czas przejazdu od miasta źródło do miasta cel. Typ równy zero oznacza zapytanie tylko o czas. Gdy zapytanie ma typ równy jeden, należy także podać trasę przejazdu.
 ------------------------------------------------------------------------------------------------------------------------
@@ -118,8 +121,6 @@ Wejście:/Input:
 ........#...........
 *##################.
 #SZCZECIN.........#.
-## Instructions
-
 #.................#.
 ##................#.
 .############*#####.
