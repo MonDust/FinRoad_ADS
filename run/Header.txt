@@ -1,0 +1,352 @@
+#pragma once
+#include "MapProcessing.h"
+
+#define MAX_CITIES 26
+#define INF 1000000
+
+int dist[MAX_CITIES][MAX_CITIES];
+
+// Initialize the distance matrix to INF for all pairs of cities
+for (int i = 0; i < MAX_CITIES; i++) {
+    for (int j = 0; j < MAX_CITIES; j++) {
+        dist[i][j] = INF;
+    }
+}
+
+// Build the adjacency matrix based on the map and list of cities
+for (int i = 0; i < MAX_CITIES; i++) {
+    if (ListOfCities[i].name != '\0') {
+        int x1 = ListOfCities[i].x;
+        int y1 = ListOfCities[i].y;
+
+        // Check all four directions for adjacent cities
+        if (x1 > 0 && TheMap[y1][x1 - 1] == '#') {
+            for (int j = 0; j < MAX_CITIES; j++) {
+                if (ListOfCities[j].name != '\0') {
+                    int x2 = ListOfCities[j].x;
+                    int y2 = ListOfCities[j].y;
+                    if (x2 < x1 && y1 == y2) {
+                        dist[i][j] = x1 - x2;
+                        dist[j][i] = x1 - x2;
+                    }
+                }
+            }
+        }
+        if (x1 < strlen(TheMap[y1]) - 1 && TheMap[y1][x1 + 1] == '#') {
+            for (int j = 0; j < MAX_CITIES; j++) {
+                if (ListOfCities[j].name != '\0') {
+                    int x2 = ListOfCities[j].x;
+                    int y2 = ListOfCities[j].y;
+                    if (x2 > x1 && y1 == y2) {
+                        dist[i][j] = x2 - x1;
+                        dist[j][i] = x2 - x1;
+                    }
+                }
+            }
+        }
+        if (y1 > 0 && TheMap[y1 - 1][x1] == '#') {
+            for (int j = 0; j < MAX_CITIES; j++) {
+                if (ListOfCities[j].name != '\0') {
+                    int x2 = ListOfCities[j].x;
+                    int y2 = ListOfCities[j].y;
+                    if (x1 == x2 && y2 < y1) {
+                        dist[i][j] = y1 - y2;
+                        dist[j][i] = y1 - y2;
+                    }
+                }
+            }
+        }
+        if (y1 < MAX_Y - 1 && TheMap[y1 + 1][x1] == '#') {
+            for (int j = 0; j < MAX_CITIES; j++) {
+                if (ListOfCities[j].name != '\0') {
+                    int x2 = ListOfCities[j].x;
+                    int y2 = ListOfCities[j].y;
+                    if (x1 == x2 && y2 > y1) {
+                        dist[i][j] = y2 - y1;
+                        dist[j][i] = y2 - y1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//////
+
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int INF = 1e9;
+
+struct City_t {
+    char name;
+    int x;
+    int y;
+};
+
+vector<City_t> ListOfCities; // the list of cities
+
+int N, M; // dimensions of the map
+char** TheMap; // the map
+
+int dist[26][26]; // adjacency matrix with distances between each city
+
+// calculate Manhattan distance between two cities
+int distance(const City_t & city1, const City_t & city2) {
+    return abs(city1.x - city2.x) + abs(city1.y - city2.y);
+}
+
+int main() {
+    // read the input
+    cin >> N >> M;
+    TheMap = new char* [N];
+    for (int i = 0; i < N; i++) {
+        TheMap[i] = new char[M];
+        for (int j = 0; j < M; j++) {
+            cin >> TheMap[i][j];
+            if (TheMap[i][j] == '*') {
+                ListOfCities.push_back({ (char)(ListOfCities.size() + 'A'), j, i });
+            }
+        }
+    }
+
+    // initialize the adjacency matrix with infinite distances
+    for (int i = 0; i < ListOfCities.size(); i++) {
+        for (int j = 0; j < ListOfCities.size(); j++) {
+            dist[i][j] = INF;
+        }
+        dist[i][i] = 0;
+    }
+
+    // calculate distances between each pair of cities
+    for (int i = 0; i < ListOfCities.size(); i++) {
+        for (int j = i + 1; j < ListOfCities.size(); j++) {
+            int d = distance(ListOfCities[i], ListOfCities[j]);
+            bool blocked = false;
+            if (ListOfCities[i].y == ListOfCities[j].y) {
+                int minx = min(ListOfCities[i].x, ListOfCities[j].x);
+                int maxx = max(ListOfCities[i].x, ListOfCities[j].x);
+                for (int k = minx + 1; k < maxx; k++) {
+                    if (TheMap[ListOfCities[i].y][k] != '#') {
+                        blocked = true;
+                        break;
+                    }
+                }
+            }
+            else if (ListOfCities[i].x == ListOfCities[j].x) {
+                int miny = min(ListOfCities[i].y, ListOfCities[j].y);
+                int maxy = max(ListOfCities[i].y, ListOfCities[j].y);
+                for (int k = miny + 1; k < maxy; k++) {
+                    if (TheMap[k][ListOfCities[i].x] != '#') {
+                        blocked = true;
+                        break;
+                    }
+                }
+            }
+            else {
+                blocked = true;
+            }
+            if (!blocked) {
+                dist[i][j] = dist[j][i] = d;
+            }
+        }
+    }
+
+    // print the adjacency matrix
+    for (int i = 0; i < ListOfCities.size(); i++) {
+        for (int j = 0; j < ListOfCities.size(); j++) {
+            if (dist[i][j] == INF) {
+                cout << "INF ";
+            }
+            else {
+                cout << dist[i][j] << " ";
+                // ....
+            }
+        }
+    }
+
+
+    ///
+
+#include <queue>
+#include <limits>
+#include <cstring>
+#include <algorithm>
+
+                        const int INF = std::numeric_limits<int>::max();
+
+                    int distanceBetweenCities(City_t city1, City_t city2) {
+                        return abs(city1.x - city2.x) + abs(city1.y - city2.y);
+                    }
+
+                    void processMap(char** TheMap, City_t * ListOfCities, int numberOfCities, int** adjacencyMatrix) {
+                        // Initialize the adjacency matrix with infinite distances
+                        for (int i = 0; i < numberOfCities; i++) {
+                            for (int j = 0; j < numberOfCities; j++) {
+                                adjacencyMatrix[i][j] = (i == j ? 0 : INF);
+                            }
+                        }
+
+                        // Iterate over the cities in the list of cities
+                        for (int i = 0; i < numberOfCities; i++) {
+                            // Find the position of the city on the map
+                            int x = ListOfCities[i].x;
+                            int y = ListOfCities[i].y;
+
+                            // Perform a breadth-first search to find all reachable cities
+                            std::queue<std::pair<int, int>> q;
+                            q.push({ x, y });
+                            int distance = 0;
+                            while (!q.empty()) {
+                                int size = q.size();
+                                for (int j = 0; j < size; j++) {
+                                    auto [x, y] = q.front();
+                                    q.pop();
+
+                                    // Check all four directions for reachable cities
+                                    if (x > 0 && TheMap[x - 1][y] != '#' && adjacencyMatrix[i][TheMap[x - 1][y] - 'A'] == INF) {
+                                        adjacencyMatrix[i][TheMap[x - 1][y] - 'A'] = distance + 1;
+                                        adjacencyMatrix[TheMap[x - 1][y] - 'A'][i] = distance + 1;
+                                        q.push({ x - 1, y });
+                                    }
+                                    if (x < 19 && TheMap[x + 1][y] != '#' && adjacencyMatrix[i][TheMap[x + 1][y] - 'A'] == INF) {
+                                        adjacencyMatrix[i][TheMap[x + 1][y] - 'A'] = distance + 1;
+                                        adjacencyMatrix[TheMap[x + 1][y] - 'A'][i] = distance + 1;
+                                        q.push({ x + 1, y });
+                                    }
+                                    if (y > 0 && TheMap[x][y - 1] != '#' && adjacencyMatrix[i][TheMap[x][y - 1] - 'A'] == INF) {
+                                        adjacencyMatrix[i][TheMap[x][y - 1] - 'A'] = distance + 1;
+                                        adjacencyMatrix[TheMap[x][y - 1] - 'A'][i] = distance + 1;
+                                        q.push({ x, y - 1 });
+                                    }
+                                    if (y < 19 && TheMap[x][y + 1] != '#' && adjacencyMatrix[i][TheMap[x][y
+
+
+
+                                        +1] - 'A'] == INF) {
+                                        adjacencyMatrix[i][TheMap[x][y + 1] - 'A'] = distance + 1;
+                                        adjacencyMatrix[TheMap[x][y + 1] - 'A'][i] = distance + 1;
+                                        q.push({ x, y + 1 });
+                                    }
+                                }
+                                distance++;
+                            }
+                        }
+
+                            // Update the adjacency matrix with distances between cities
+                            for (int i = 0; i < numberOfCities; i++) {
+                                for (int j = i + 1; j < numberOfCities; j++) {
+                                    int distance = distanceBetweenCities(ListOfCities[i], ListOfCities[j]);
+                                    adjacencyMatrix[i][j] = distance;
+                                    adjacencyMatrix[j][i] = distance;
+                                }
+                            }
+                    }
+
+                    ///
+
+#include <stack>
+#include <unordered_set>
+
+                    void GetDist(Position_t MapSize, TheMapElement_t** TheMap, AdjecencyMatrix_t* TheMatrix, Position_t StartPosition, size_t IndexOfStartCity) {
+                        std::stack<std::pair<Position_t, int>> stack;
+                        std::unordered_set<Position_t> visited;
+                        int Dir4_x[4] = { 0, 0, 1, -1 };
+                        int Dir4_y[4] = { 1, -1, 0, 0 };
+                        int dist = 0;
+
+                        stack.push({ StartPosition, dist });
+
+                        while (!stack.empty()) {
+                            auto [currentPos, currentDist] = stack.top();
+                            stack.pop();
+
+                            if (visited.count(currentPos) > 0) {
+                                continue;
+                            }
+                            visited.insert(currentPos);
+
+                            TheMapElement_t* currentElem = &TheMap[currentPos.x][currentPos.y];
+                            currentElem->IsVisited = true;
+
+                            for (int i = 0; i < 4; i++) {
+                                int nextX = currentPos.x + Dir4_x[i];
+                                int nextY = currentPos.y + Dir4_y[i];
+
+                                if (nextX < 0 || nextX >= MapSize.x || nextY < 0 || nextY >= MapSize.y)
+                                    continue;
+
+                                TheMapElement_t* nextElem = &TheMap[nextX][nextY];
+                                if (nextElem->Map == '#') {
+                                    if (visited.count({ nextX, nextY }) == 0) {
+                                        stack.push({ {nextX, nextY}, currentDist + 1 });
+                                    }
+                                }
+                                else if (nextElem->Map == '*') {
+                                    size_t Index = TheMatrix->FindAnIndexOftheCity({ nextX, nextY });
+
+                                    if (Index != 0) {
+                                        size_t** AdjMatrix = TheMatrix->GetAdjMatrix();
+                                        if (IndexOfStartCity != Index) {
+                                            int totalDist = currentDist + 1;
+                                            if ((AdjMatrix[IndexOfStartCity - STARTINGPOSITION][Index - STARTINGPOSITION] > totalDist && totalDist != 0) || AdjMatrix[IndexOfStartCity - STARTINGPOSITION][Index - STARTINGPOSITION] == 0) {
+                                                AdjMatrix[IndexOfStartCity - STARTINGPOSITION][Index - STARTINGPOSITION] = totalDist;
+                                                AdjMatrix[Index - STARTINGPOSITION][IndexOfStartCity - STARTINGPOSITION] = totalDist;
+                                            };
+                                        };
+                                    };
+                                };
+                            }
+                        }
+                    }
+
+
+                    /////
+
+                    #include <stack>
+
+void GetDist(Position_t MapSize, TheMapElement_t** TheMap, AdjecencyMatrix_t* TheMatrix, Position_t StartPosition, size_t IndexOfStartCity) {
+    int dist = 0;
+    std::stack<std::pair<Position_t, int>> stack;
+    stack.push({StartPosition, dist});
+
+    int Dir4_x[4] = {0, 0, 1, -1};
+    int Dir4_y[4] = {1, -1, 0, 0};
+
+    while(!stack.empty()) {
+        auto [currentPos, currentDist] = stack.top();
+        stack.pop();
+
+        TheMap[currentPos.x][currentPos.y].IsVisited = true;
+
+        for(int i = 0; i < 4; i++) {
+            int nextX = currentPos.x + Dir4_x[i];
+            int nextY = currentPos.y + Dir4_y[i];
+
+            if (nextX < 0 || nextX >= MapSize.x || nextY < 0 || nextY >= MapSize.y)
+                continue;
+
+            if (TheMap[nextX][nextY].Map == '#') {
+                if (!TheMap[nextX][nextY].IsVisited)
+                    stack.push({{nextX, nextY}, currentDist + 1});
+            } else if (TheMap[nextX][nextY].Map == '*') {
+                size_t Index = TheMatrix->FindAnIndexOftheCity({nextX, nextY});
+
+                if (Index != 0) {
+                    size_t** AdjMatrix = TheMatrix->GetAdjMatrix();
+                    if (IndexOfStartCity != Index) {
+                        int totalDist = currentDist + 1;
+                        if ((AdjMatrix[IndexOfStartCity - STARTINGPOSITION][Index - STARTINGPOSITION] > totalDist && totalDist != 0) || AdjMatrix[IndexOfStartCity - STARTINGPOSITION][Index - STARTINGPOSITION] == 0) {
+                            AdjMatrix[IndexOfStartCity - STARTINGPOSITION][Index - STARTINGPOSITION] = totalDist;
+                            AdjMatrix[Index - STARTINGPOSITION][IndexOfStartCity - STARTINGPOSITION] = totalDist;
+                        };
+                    };
+                };
+            };
+        }
+    }
+};
