@@ -8,12 +8,12 @@ The name will be unambiguously assigned to the city. There will be no number or 
 
 Implementation notes:
 
-    Standard string class and other standard library containers cannot be used.
-    You can use C++ elements such as classes, references, etc.
-    One can implement their own string class.
-    Code readability is important, and comments (which are of course allowed) do not necessarily ensure it.
-    Smartpointers from standard library are forbidden, but you can still implement your own smartpointer class.
-    Please remember to free memory when deleting elements of the implemented data structures.
+- Standard string class and other standard library containers cannot be used.
+- You can use C++ elements such as classes, references, etc.
+- One can implement their own string class.
+- Code readability is important, and comments (which are of course allowed) do not necessarily ensure it.
+- Smartpointers from standard library are forbidden, but you can still implement your own smartpointer class.
+- Please remember to free memory when deleting elements of the implemented data structures.
 
 ### Examples:
 
