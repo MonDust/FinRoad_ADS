@@ -18,10 +18,12 @@ Implementation notes:
 
 This can be:
 
-*GDANSK....OPOLE....RUMIA
-...*GDYNIA......*....*...
-*SOPOT.............*....*
-...PUCK*.*KRAKOW.REDA.HEL
+    *GDANSK....OPOLE....RUMIA
+    ...*GDYNIA......*....*...
+    *SOPOT.............*....*
+    ...PUCK*.*KRAKOW.REDA.HEL
+
+### Przykłady:/Examples:
 
 ## Full information about the project
 Results and full instruction available in Instructions.txt.
