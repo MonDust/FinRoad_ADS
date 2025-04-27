@@ -145,3 +145,21 @@ Wyjście:/Output:
 5
 40
 40 KIELCE SZCZECIN
+
+Result:
+est	Result	Remarks	Points	Time[s]	Total memory[KB]	Static memory[KB]	Stack memory[KB]
+1	accepted		100	0.002667	85	40	17
+2	accepted		100	0.002193	81	40	17
+3	accepted		100	0.004908	89	40	17
+4	accepted		100	0.005106	137	40	17
+5	accepted		100	0.011709	153	40	17
+6	accepted		100	0.025490	717	40	17
+7	accepted		100	0.023916	717	40	17
+8	accepted		100	0.285119	717	40	17
+9	accepted		100	0.823713	19009	40	17
+10	accepted		100	0.375360	3925	40	17
+11	time limit exceeded	citieslist_t.h:271		3.002509	12113	40	17
+12	skipped						
+13	skipped						
+14	skipped						
+Total: 	71.4%	4.563	19009	40	17
